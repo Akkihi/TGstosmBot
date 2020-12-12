@@ -21,7 +21,7 @@ async def send_media_group(message: Message):
         await asyncio.sleep(5)
 
         # рассылка на другие сервисы
-        await vk.wall_uploads(file_paths, caption)
+        #await vk.wall_uploads(file_paths, caption)
         pinterest.handle_media_group(file_paths, caption)
 
     data.clear()

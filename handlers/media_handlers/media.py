@@ -1,5 +1,8 @@
 from aiogram.types import Message, ContentType
 import asyncio
+
+from aiogram.utils.exceptions import BadRequest
+
 import config
 from auth import dp
 from services.pinterest import pinterest
@@ -18,17 +21,21 @@ from utils import permissions, download
                                    ])
 async def on_media(message: Message):
     print("Отправляется одна картинка.")
-    await message.copy_to(config.target_channel_id)
+    await message.send_copy(config.target_channel_id)
 
-    file_path = await download.download_media(message.photo or
-                                              message.document or
-                                              message.audio or
-                                              message.video or
-                                              message.sticker)
+    try:
+        file_path = await download.download_media(message.photo or
+                                                  message.document or
+                                                  message.audio or
+                                                  message.video or
+                                                  message.sticker)
+    except BadRequest as e:
+        await message.reply('Произошла ошибка получения файла, попробуйте еще раз')
+        return
 
     # тут рассылка на другие сервисы
-    await vk.wall_upload(file_path, message.caption)
+    #await vk.wall_upload(file_path, message.caption)
     pinterest.handle_media(file_path, message.caption)
 
-    await message.answer('Сообщение отослано')
+    await message.answer('сообщение отослано')
     await asyncio.sleep(1)

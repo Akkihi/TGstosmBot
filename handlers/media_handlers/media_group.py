@@ -2,6 +2,8 @@
 import asyncio
 
 from aiogram.types import Message, ContentType
+from aiogram.utils.exceptions import BadRequest
+
 from auth import dp, runner
 from utils import permissions, download
 from utils.data import data
@@ -18,10 +20,21 @@ async def on_media_group(message: Message):
         data[message.media_group_id]['media'] = list()
         data[message.media_group_id]['text'] = None
         data[message.media_group_id]['schedule_task'] = None
+        data[message.media_group_id]['has_error'] = False
+
+    if data[message.media_group_id]['has_error']:
+        print('Пропуск сообщения {} по причине ошибки в медиа-группе'.format(message.message_id))
+        return
 
     custom_file_name = str(message.media_group_id) + '_' + str(message.message_id)
-    file_path = await download.download_media(message.photo or message.video,
-                                              custom_file_name=custom_file_name)
+
+    try:
+        file_path = await download.download_media(message.photo or message.video,
+                                                  custom_file_name=custom_file_name)
+    except BadRequest as e:
+        await message.reply('Произошла ошибка скачивания сообщения, попробуйте еще раз')
+        data[message.media_group_id]['has_error'] = True
+        return
 
     data[message.media_group_id]['media'].append(file_path)
 
