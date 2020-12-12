@@ -34,7 +34,7 @@ async def on_media(message: Message):
         return
 
     # тут рассылка на другие сервисы
-    #await vk.wall_upload(file_path, message.caption)
+    await vk.wall_upload(file_path, message.caption)
     pinterest.handle_media(file_path, message.caption)
 
     await message.answer('сообщение отослано')

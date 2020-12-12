@@ -13,16 +13,17 @@ from utils.data import data
 
 async def send_media_group(message: Message):
     for key in data.keys():
-        file_paths = sorted(data[key]['media'])
-        caption = data[key]['text']
+        if not data[key]['has_error']:
+            file_paths = sorted(data[key]['media'])
+            caption = data[key]['text']
 
-        target_media_group = files_to_media_group(file_paths, caption)
-        await message.bot.send_media_group(config.target_channel_id, target_media_group)
-        await asyncio.sleep(5)
+            target_media_group = files_to_media_group(file_paths, caption)
+            await message.bot.send_media_group(config.target_channel_id, target_media_group)
+            await asyncio.sleep(5)
 
-        # рассылка на другие сервисы
-        #await vk.wall_uploads(file_paths, caption)
-        pinterest.handle_media_group(file_paths, caption)
+            # рассылка на другие сервисы
+            await vk.wall_uploads(file_paths, caption)
+            pinterest.handle_media_group(file_paths, caption)
 
     data.clear()
 
