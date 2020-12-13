@@ -6,15 +6,17 @@ config_path = 'config.json'
 TOKEN = ''
 superadmin_username = ''
 target_channel_id = ''
+target_log_chat_ids = []
 VK_TOKEN = ''
 vk_group_id = ''
+
 
 def get_bot_id():
     return TOKEN.split(":")[0]
 
 
 def load_config():
-    global TOKEN, superadmin_username, target_channel_id, VK_TOKEN, vk_group_id
+    global TOKEN, superadmin_username, target_channel_id, target_log_chat_ids, VK_TOKEN, vk_group_id
 
     try:
         with open(config_path, 'r') as file:
@@ -23,6 +25,7 @@ def load_config():
             TOKEN = config['token']
             superadmin_username = config['superadmin_username']
             target_channel_id = config['target_channel_id']
+            target_log_chat_ids = config['target_log_chat_ids']
             VK_TOKEN = config['vk_token']
             vk_group_id = config['vk_group_id']
 
@@ -37,6 +40,7 @@ def write_config():
     config['token'] = TOKEN
     config['superadmin_username'] = superadmin_username
     config['target_channel_id'] = target_channel_id
+    config['target_log_chat_ids'] = target_log_chat_ids
     config['vk_token'] = VK_TOKEN
     config['vk_group_id'] = vk_group_id
 

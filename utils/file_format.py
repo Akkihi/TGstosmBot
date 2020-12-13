@@ -1,4 +1,4 @@
-images_ext = ['jpg', 'jpeg', 'png']
+images_ext = ['jpg', 'jpeg', 'png', 'webp']
 video_ext = ['mp4']
 
 

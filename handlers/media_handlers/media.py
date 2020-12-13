@@ -1,3 +1,4 @@
+import os
 from aiogram.types import Message, ContentType
 import asyncio
 

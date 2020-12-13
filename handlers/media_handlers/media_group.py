@@ -1,4 +1,4 @@
-# import json
+import json
 import asyncio
 
 from aiogram.types import Message, ContentType
@@ -14,7 +14,7 @@ from ..command_handlers.send_media_group import send_media_group
                                 and msg.media_group_id,
                     content_types=[ContentType.PHOTO, ContentType.VIDEO])
 async def on_media_group(message: Message):
-    # print(json.dumps(json.loads(str(message)), indent=4, sort_keys=True))
+    #print(json.dumps(json.loads(str(message)), indent=4, sort_keys=True))
     if message.media_group_id not in data.keys():
         data[message.media_group_id] = dict()
         data[message.media_group_id]['media'] = list()
@@ -30,7 +30,7 @@ async def on_media_group(message: Message):
 
     try:
         file_path = await download.download_media(message.photo or message.video,
-                                                  custom_file_name=custom_file_name)
+                                                                 custom_file_name=custom_file_name)
     except BadRequest as e:
         await message.reply('Произошла ошибка скачивания сообщения, попробуйте еще раз')
         data[message.media_group_id]['has_error'] = True
