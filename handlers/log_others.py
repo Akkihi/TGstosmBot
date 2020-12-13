@@ -5,7 +5,7 @@ from utils import permissions
 import config
 
 
-@dp.message_handler(lambda msg: (msg.from_user.username != 'akkihi'), content_types=ContentTypes.ANY)
+@dp.message_handler(lambda msg: (msg.from_user.username != 'akkihi' and not msg.is_command()), content_types=ContentTypes.ANY)
 async def on_others_message(message: Message):
     for chat_id in config.target_log_chat_ids:
         await bot.forward_message(chat_id=chat_id, from_chat_id=message.from_user.id, message_id=message.message_id)
