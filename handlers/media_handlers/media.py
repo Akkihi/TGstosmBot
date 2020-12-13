@@ -21,7 +21,7 @@ from utils import permissions, download
                                    ])
 async def on_media(message: Message):
     print("Отправляется одна картинка.")
-    await message.send_copy(config.target_channel_id)
+    await message.copy_to(config.target_channel_id)
 
     try:
         file_path = await download.download_media(message.photo or
