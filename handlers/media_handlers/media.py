@@ -38,5 +38,5 @@ async def on_media(message: Message):
     await vk.wall_upload(file_path, message.caption)
     pinterest.handle_media(file_path, message.caption)
 
-    await message.answer('сообщение отослано')
+    await message.answer('Cообщение отослано.')
     await asyncio.sleep(1)
