@@ -33,7 +33,6 @@ async def download_media(media: Union[List[PhotoSize], Document, Animation, Stic
                 buffered_writer = await media.download(custom_file_name_path)
             else:
                 buffered_writer = await media.download()
-            buffered_writer.close()
             break
         except BadRequest as e:
             if try_count == 2:
