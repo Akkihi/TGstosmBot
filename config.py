@@ -1,12 +1,11 @@
-import os
 import json
 
 config_path = 'config.json'
 
 TOKEN = ''
-superadmin_username = ''
-target_channel_id = ''
-target_log_chat_ids = []
+admins_ids = []             # те кто может слать сообщения в бота и бот их отправит в канал
+log_chats_ids = []          # те кто получают предложку
+target_channels_ids = []    # каналы куда рассылается контент от админов
 VK_TOKEN = ''
 vk_group_id = ''
 
@@ -16,16 +15,16 @@ def get_bot_id():
 
 
 def load_config():
-    global TOKEN, superadmin_username, target_channel_id, target_log_chat_ids, VK_TOKEN, vk_group_id
+    global TOKEN, admins_ids, target_channels_ids, log_chats_ids, VK_TOKEN, vk_group_id
 
     try:
         with open(config_path, 'r') as file:
             config = json.loads(file.read())
 
             TOKEN = config['token']
-            superadmin_username = config['superadmin_username']
-            target_channel_id = config['target_channel_id']
-            target_log_chat_ids = config['target_log_chat_ids']
+            admins_ids = config['admins_ids']
+            log_chats_ids = config['log_chats_ids']
+            target_channels_ids = config['target_channels_ids']
             VK_TOKEN = config['vk_token']
             vk_group_id = config['vk_group_id']
 
@@ -38,9 +37,9 @@ def load_config():
 def write_config():
     config = dict()
     config['token'] = TOKEN
-    config['superadmin_username'] = superadmin_username
-    config['target_channel_id'] = target_channel_id
-    config['target_log_chat_ids'] = target_log_chat_ids
+    config['admins_ids'] = admins_ids
+    config['log_chats_ids'] = log_chats_ids
+    config['target_channels_ids'] = target_channels_ids
     config['vk_token'] = VK_TOKEN
     config['vk_group_id'] = vk_group_id
 

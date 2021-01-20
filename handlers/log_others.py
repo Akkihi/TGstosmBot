@@ -1,15 +1,18 @@
-from aiogram.types import Message, ContentTypes
 import asyncio
-from auth import dp, bot
-from utils import permissions
+
+from aiogram.types import Message, ContentTypes
+
 import config
+from auth import dp
+from utils import permissions
 
 
-@dp.message_handler(lambda msg: (msg.from_user.username != 'akkihi' and not msg.is_command()), content_types=ContentTypes.ANY)
+@dp.message_handler(lambda msg: permissions.is_admin(msg.from_user) and not msg.is_command(),
+                    content_types=ContentTypes.ANY)
 async def on_others_message(message: Message):
-    for chat_id in config.target_log_chat_ids:
-        await message.forward(chat_id)
-        #await bot.forward_message(chat_id=chat_id, from_chat_id=message.from_user.id, message_id=message.message_id)
+    # Пересылка предложки админам
+    for log_chat_id in config.log_chats_ids:
+        await message.forward(log_chat_id)
         await asyncio.sleep(1)
-    print("Несанкционированный доступ, username: "+ (message.from_user.username or " ") + " . ID: "+str(message.from_user.id))
+    print("Предложка от username: " + (message.from_user.username or " ") + " . ID: " + str(message.from_user.id))
     await asyncio.sleep(1)
