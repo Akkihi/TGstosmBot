@@ -19,3 +19,4 @@ async def log_message(message: Message):
         await asyncio.sleep(1)
     print("Предложка от username: " + (message.from_user.username or " ") + " . ID: " + str(message.from_user.id))
     await asyncio.sleep(1)
+    await message.answer('Сообщение отослано')

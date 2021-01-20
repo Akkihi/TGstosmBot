@@ -25,17 +25,18 @@ async def send_media_group(message: Message):
                 for target_channel_id in config.target_channels_ids:
                     await message.bot.send_media_group(target_channel_id, target_media_group)
                     await asyncio.sleep(5)
+                try:
+                    # рассылка на другие сервисы
+                    await vk.wall_uploads(file_paths, caption)
+                    pinterest.handle_media_group(file_paths, caption)
+                except Exception as e:
+                    print(e)
+
             else:
+                # Рассылка по получателям предложки
                 for log_chat_id in config.log_chats_ids:
                     await message.bot.send_media_group(log_chat_id, target_media_group)
                     await asyncio.sleep(5)
-
-            try:
-                # рассылка на другие сервисы
-                await vk.wall_uploads(file_paths, caption)
-                pinterest.handle_media_group(file_paths, caption)
-            except Exception as e:
-                print(e)
 
     data.clear()
 
