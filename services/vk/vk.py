@@ -19,7 +19,7 @@ async def login(self):
     client = AIOHTTPClient()
     api = API(clients=client, tokens=BotSyncSingleToken(Token(config.VK_TOKEN)))
     print("login(vk)")
-    print("GROUP ID IS :  " + config.vk_group_id + "\nTelegram admin: " + config.superadmin_username)
+    print("GROUP ID IS :  " + config.vk_group_id + "\nTelegram admin: " + str(config.admins_ids))
 
 
 async def text_message(text: str):
