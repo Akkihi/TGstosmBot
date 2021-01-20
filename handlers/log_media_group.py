@@ -6,13 +6,15 @@ from aiogram.utils.exceptions import BadRequest
 from auth import dp, runner
 from utils import permissions, download
 from utils.data import data
-from ..command_handlers.send_media_group import send_media_group
+from .command_handlers.send_media_group import send_media_group
 
 
-@dp.message_handler(lambda msg: permissions.is_admin(msg.from_user)
-                                and msg.media_group_id,
+@dp.message_handler(lambda msg: not permissions.is_admin(msg.from_user) and
+                                not permissions.is_log_target(msg.from_user) and
+                                not msg.is_command() and
+                                msg.media_group_id,
                     content_types=[ContentType.PHOTO, ContentType.VIDEO])
-async def on_media_group(message: Message):
+async def log_media_group(message: Message):
     # Инициализация словаря под медиагруппу если ее еще нет в списке
     if message.media_group_id not in data.keys():
         data[message.media_group_id] = dict()

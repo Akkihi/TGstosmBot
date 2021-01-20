@@ -6,7 +6,7 @@ from aiogram.types import Message, MediaGroup, InputMediaPhoto, InputMediaVideo,
 import config
 from services.pinterest import pinterest
 from services.vk import vk
-from utils import file_format
+from utils import file_format, permissions
 from utils.data import data
 
 
@@ -20,10 +20,15 @@ async def send_media_group(message: Message):
             # Компоновка файлов в MediaGroup
             target_media_group = files_to_media_group(file_paths, caption)
 
-            # Рассылка по целевым группам
-            for target_channel_id in config.target_channels_ids:
-                await message.bot.send_media_group(target_channel_id, target_media_group)
-                await asyncio.sleep(5)
+            if permissions.is_admin(data[key]['from_user']):
+                # Рассылка по целевым группам
+                for target_channel_id in config.target_channels_ids:
+                    await message.bot.send_media_group(target_channel_id, target_media_group)
+                    await asyncio.sleep(5)
+            else:
+                for log_chat_id in config.log_chats_ids:
+                    await message.bot.send_media_group(log_chat_id, target_media_group)
+                    await asyncio.sleep(5)
 
             try:
                 # рассылка на другие сервисы

@@ -9,9 +9,10 @@ from utils import permissions
 
 @dp.message_handler(lambda msg: not permissions.is_admin(msg.from_user) and
                                 not permissions.is_log_target(msg.from_user) and
-                                not msg.is_command(),
+                                not msg.is_command() and
+                                not msg.media_group_id,
                     content_types=ContentTypes.ANY)
-async def on_others_message(message: Message):
+async def log_message(message: Message):
     # Пересылка предложки админам
     for log_chat_id in config.log_chats_ids:
         await message.forward(log_chat_id)
