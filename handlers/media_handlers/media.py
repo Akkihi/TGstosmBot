@@ -35,9 +35,12 @@ async def on_media(message: Message):
         await message.reply('Произошла ошибка получения файла, попробуйте еще раз')
         return
 
-    # тут рассылка на другие сервисы
-    await vk.wall_upload(file_path, message.caption)
-    pinterest.handle_media(file_path, message.caption)
+    try:
+        # тут рассылка на другие сервисы
+        await vk.wall_upload(file_path, message.caption)
+        pinterest.handle_media(file_path, message.caption)
+    except Exception as e:
+        print(e)
 
     await message.answer('Сообщение отослано.')
     await asyncio.sleep(1)

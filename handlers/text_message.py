@@ -15,8 +15,11 @@ async def on_text_message(message: Message):
     for target_channel_id in config.target_channels_ids:
         await message.copy_to(target_channel_id)
 
-    await vk.text_message(message.text)
-    pinterest.handle_text(message.text)
+    try:
+        await vk.text_message(message.text)
+        pinterest.handle_text(message.text)
+    except Exception as e:
+        print(e)
 
     await message.answer('Текстовое сообщение отослано.')
     await asyncio.sleep(1)

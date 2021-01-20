@@ -37,6 +37,7 @@ async def on_media_group(message: Message):
         data[message.media_group_id]['has_error'] = True
         return
 
+    # Сохранение файла в список
     data[message.media_group_id]['media'].append(file_path)
 
     # Установка таймера на отправку медиагруппы

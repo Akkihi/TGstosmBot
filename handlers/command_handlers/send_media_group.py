@@ -25,9 +25,12 @@ async def send_media_group(message: Message):
                 await message.bot.send_media_group(target_channel_id, target_media_group)
                 await asyncio.sleep(5)
 
-            # рассылка на другие сервисы
-            await vk.wall_uploads(file_paths, caption)
-            pinterest.handle_media_group(file_paths, caption)
+            try:
+                # рассылка на другие сервисы
+                await vk.wall_uploads(file_paths, caption)
+                pinterest.handle_media_group(file_paths, caption)
+            except Exception as e:
+                print(e)
 
     data.clear()
 
