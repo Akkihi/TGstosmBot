@@ -7,4 +7,4 @@ def get_full_name(user: User):
 
 
 def get_user_link(user: User):
-    return link(get_full_name(user), 'tg://user?id=' + user.id)
+    return link(get_full_name(user), 'tg://user?id=' + str(user.id))
