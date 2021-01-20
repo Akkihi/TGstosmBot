@@ -7,7 +7,9 @@ from auth import dp
 from utils import permissions
 
 
-@dp.message_handler(lambda msg: not permissions.is_admin(msg.from_user) and not msg.is_command(),
+@dp.message_handler(lambda msg: not permissions.is_admin(msg.from_user) and
+                                not permissions.is_log_target(msg.from_user) and
+                                not msg.is_command(),
                     content_types=ContentTypes.ANY)
 async def on_others_message(message: Message):
     # Пересылка предложки админам
