@@ -1,4 +1,5 @@
 import asyncio
+import os
 from typing import List
 
 from aiogram.types import Message, MediaGroup, InputMediaPhoto, InputMediaVideo, InputFile
@@ -14,15 +15,17 @@ async def send_media_group(message: Message):
     key = message.media_group_id
     # Проверка на ошибки в медиагруппе, если один из файлов поступил с ошибкой то мы пропускаем медиагруппу
     if not data[key]['has_error']:
+        # сортировка по message_id которые есть в названии файла
         file_paths = sorted(data[key]['media'])
         caption = data[key]['text']
-
-        # Компоновка файлов в MediaGroup
-        target_media_group = files_to_media_group(file_paths, caption)
 
         if permissions.is_admin(data[key]['from_user']):
             # Рассылка по целевым группам
             for target_channel_id in config.target_channels_ids:
+
+                # Компоновка файлов в MediaGroup
+                target_media_group = files_to_media_group(file_paths, caption)
+
                 await message.bot.send_media_group(target_channel_id, target_media_group)
                 await asyncio.sleep(5)
             try:
@@ -35,8 +38,16 @@ async def send_media_group(message: Message):
         else:
             # Рассылка по получателям предложки
             for log_chat_id in config.log_chats_ids:
+
+                # Компоновка файлов в MediaGroup
+                target_media_group = files_to_media_group(file_paths, caption)
+
                 await message.bot.send_media_group(log_chat_id, target_media_group)
                 await asyncio.sleep(5)
+
+            # удаление файлов
+            for file_path in file_paths:
+                os.remove(file_path)
 
     del data[key]
 

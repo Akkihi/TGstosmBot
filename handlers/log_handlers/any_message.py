@@ -12,7 +12,7 @@ from utils import permissions
                                 not msg.is_command() and
                                 not msg.media_group_id,
                     content_types=ContentTypes.ANY)
-async def log_message(message: Message):
+async def on_any_message(message: Message):
     # Пересылка предложки админам
     for log_chat_id in config.log_chats_ids:
         await message.forward(log_chat_id)
