@@ -2,12 +2,13 @@ import asyncio
 import os
 from typing import List
 
-from aiogram.types import Message, MediaGroup, InputMediaPhoto, InputMediaVideo, InputFile
+from aiogram.types import Message, MediaGroup, InputMediaPhoto, InputMediaVideo, InputFile, ParseMode
+from aiogram.utils.markdown import text
 
 import config
 from services.pinterest import pinterest
 from services.vk import vk
-from utils import file_format, permissions
+from utils import file_format, permissions, user_tools
 from utils.data import data
 
 
@@ -42,7 +43,12 @@ async def send_media_group(message: Message):
                 # Компоновка файлов в MediaGroup
                 target_media_group = files_to_media_group(file_paths, caption)
 
+                # отсылка медиагруппы
                 await message.bot.send_media_group(log_chat_id, target_media_group)
+
+                from_user_caption = text('Предложка от пользователя: ', user_tools.get_user_link(message.from_user))
+                await message.bot.send_message(log_chat_id, from_user_caption, parse_mode=ParseMode.MARKDOWN_V2)
+
                 await asyncio.sleep(5)
 
             # удаление файлов

@@ -27,7 +27,7 @@ async def on_media_group(message: Message):
         return
 
     # Генерация имени файла
-    custom_file_name = str(message.media_group_id) + '_' + str(message.message_id)
+    custom_file_name = str(message.chat.id) + '_' + str(message.media_group_id) + '_' + str(message.message_id)
 
     # Скачивание файла
     try:
