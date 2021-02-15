@@ -1,5 +1,5 @@
 # TGstosmBot
-Telegram-bot sending content to others social media
+Telegram-bot sending content to others social media @oipaoiw_bot
 
 ## Supports platforms
 * Telegram
